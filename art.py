@@ -20,22 +20,21 @@ python art.py \
 # You can also use "gs://path.json" file paths.
 """
 
-import tensorflow as tf
+from absl import flags
 import numpy as np
 import json
 import krippendorff
 from sklearn.metrics import accuracy_score
 
-FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer("repetitions", 1000, "Number of samples to be performed.")
-tf.app.flags.DEFINE_string("et_coders", "", "JSON file with easier task coders UIDs - required for Krippendorff's alpha")
-tf.app.flags.DEFINE_string("et_judgments", "", "JSON file with easier task judgments (1:1 with et coders) - required for Krippendorff's alpha")
-tf.app.flags.DEFINE_string("ht_coders", "", "JSON file with harder task coders UIDs - required for Krippendorff's alpha")
-tf.app.flags.DEFINE_string("ht_judgments", "", "JSON file with harder task judgments (1:1 with ht coders) - required for Krippendorff's alpha")
+FLAGS = flags.FLAGS
+flags.DEFINE_integer("repetitions", 1000, "Number of samples to be performed.")
+flags.DEFINE_string("et_coders", None, "JSON file with easier task coders UIDs - required for Krippendorff's alpha")
+flags.DEFINE_string("et_judgments", None, "JSON file with easier task judgments (1:1 with et coders) - required for Krippendorff's alpha")
+flags.DEFINE_string("ht_coders", None, "JSON file with harder task coders UIDs - required for Krippendorff's alpha")
+flags.DEFINE_string("ht_judgments", None, "JSON file with harder task judgments (1:1 with ht coders) - required for Krippendorff's alpha")
 
-for flag in ["et_coders", "ht_coders", "et_judgments", "ht_judgments"]:
-    tf.app.flags.mark_flag_as_required(flag)
-
+for flag in ["et_coders", "ht_coders", "et_judgments", "ht_judgments"]: 
+    flags.mark_flag_as_required(flag)
 
 def scramble(judgments, columns_only=True):
     """
