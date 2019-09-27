@@ -60,15 +60,18 @@ def build_reliability_data(coders_list, labels_list):
     :param labels_list: a list of lists, each being the coder judgments for a unit question (1:1 with coders_list)
     :return: a numpy reliability data matrix (i.e., each row being a coder, each column being a judgment)
     >>> matrix = build_reliability_data([["a", "c", "b"], ["b", "d", "a"]], [[1,0,1],[0,1,1]])
+    >>> array([[ 1.,  1.],
+               [ 1.,  0.],
+               [ 0., nan],
+               [nan,  1.]])
     """
-    coders = list({coder for unit_coders in coders_list for coder in unit_coders})
+    coders = sorted(list({coder for unit_coders in coders_list for coder in unit_coders}))
     # index the coders, from 0 to |coders|
-    coders2index = lambda coder: coders.index(coder)
     reliability_data = [[] for _ in coders]
     # for each coder create a row and find all judgments
     for coder in coders:
         # for this coder get his/her ID
-        cid = coders2index(coder)
+        cid = coders.index(coder)
         # zip coders and judgments across rows
         for coders_in_unit, labels_in_unit in zip(coders_list, labels_list):
             # if the coder has judged this question find his/her judgment, else put np.nan
