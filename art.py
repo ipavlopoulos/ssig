@@ -82,7 +82,7 @@ def build_reliability_data(coders_list, labels_list):
                 label = np.nan
             # update the reliability data for that coder (use his/her index)
             reliability_data[cid].append(label)
-    return np.array(reliability_data)
+    return np.array(reliability_data), coders
 
 
 def sided_test(t, t_obs):
