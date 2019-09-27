@@ -58,7 +58,7 @@ def build_reliability_data(coders_list, labels_list):
     Build a reliability data matrix to be used for Krippendorff's alpha calculation
     :param coders_list: a list of lists, each being the coder UIDs for a unit question
     :param labels_list: a list of lists, each being the coder judgments for a unit question (1:1 with coders_list)
-    :return: a numpy reliability data matrix (i.e., each row being a coder, each column being a judgment)
+    :return: a numpy reliability data matrix (i.e., each row being a coder, each column being a judgment), and coders
     >>> matrix = build_reliability_data([["a", "c", "b"], ["b", "d", "a"]], [[1,0,1],[0,1,1]])
     >>> array([[ 1.,  1.],
                [ 1.,  0.],
@@ -152,9 +152,9 @@ def compare(et_coders, et_judgments, ht_coders, ht_judgments):
     :param ht_judgments: labels assigned by the coders of the harder task
     :return: difference between the agreement of <et> and <ht>
     """
-    rd1 = build_reliability_data(et_coders, et_judgments)
+    rd1,_ = build_reliability_data(et_coders, et_judgments)
     a1 = krippendorff.alpha(rd1)
-    rd2 = build_reliability_data(ht_coders, ht_judgments)
+    rd2,_ = build_reliability_data(ht_coders, ht_judgments)
     a2 = krippendorff.alpha(rd2)
     return a1 - a2
 
