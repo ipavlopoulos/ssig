@@ -5,11 +5,16 @@ ROC AUC with 95% confidence intervals.
 Here, bootraping confidence intervals are used to complement the ROC AUC score.
 Partially based on: https://cs.stanford.edu/people/ihaque/posters/EC4-AUC_Confidence_Intervals.pdf
 
+You need to have pandas, sklearn and numpy installed.
 In python, run as:
->>> import ci
->>> ci.AUC(gold, predictions).evaluate()
+>>>import ci, numpy as np
+>>>y_true = np.array([0, 0, 1, 1])
+>>>y_scores = np.array([0.1, 0.4, 0.35, 0.8])
+>>>auc, (lower, upper) = ci.AUC(y_true, y_scores).evaluate()
 """
 from sklearn.metrics import *
+import numpy as np
+import pandas as pd
 
 class AUC(object):
 
