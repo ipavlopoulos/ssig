@@ -25,6 +25,7 @@ class AUC(object):
                  gold_truth=np.array([], dtype=np.uint8),
                  predictions=np.array([], dtype=np.uint8),
                  method=roc_auc_score,
+                 opt="max",
                  n_boot=1000):
         assert len(gold_truth) == len(predictions)
         self.method = method
@@ -32,6 +33,7 @@ class AUC(object):
         self.dataset["GOLD"] = gold_truth
         self.dataset["PREDICTED"] = predictions
         self.n_boot = n_boot
+        self.opt = opt
         self.sample_evaluations = []
         self.sorted_sample_evaluations = pd.Series()
         self.score = method(gold_truth, predictions)
@@ -39,7 +41,11 @@ class AUC(object):
     def resample(self):
         for _ in tqdm(range(self.n_boot)):
             sample = self.dataset.sample(frac=.5, replace=True)
-            self.sample_evaluations.append(self.method(sample.GOLD, sample.PREDICTED))
+            if len(set(sample.GOLD)) == 1:
+                score = 1 if self.opt == "max" else 0
+            else:
+                score = self.method(sample.GOLD, sample.PREDICTED)
+            self.sample_evaluations.append(score)
         self.sorted_sample_evaluations = pd.Series(sorted(self.sample_evaluations))
 
     def get_cis(self, quantiles=[0.025, 0.975]):
