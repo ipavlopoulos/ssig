@@ -33,8 +33,6 @@ flags.DEFINE_string("et_judgments", None, "JSON file with easier task judgments 
 flags.DEFINE_string("ht_coders", None, "JSON file with harder task coders UIDs - required for Krippendorff's alpha")
 flags.DEFINE_string("ht_judgments", None, "JSON file with harder task judgments (1:1 with ht coders) - required for Krippendorff's alpha")
 
-for flag in ["et_coders", "ht_coders", "et_judgments", "ht_judgments"]: 
-    flags.mark_flag_as_required(flag)
 
 def scramble(judgments, columns_only=True):
     """
